@@ -1,15 +1,26 @@
-name: 每 40 分钟提交一次
+name: 定时构建
 
 on:
   schedule:
-    - cron: "*/40 * * * *"
+    - cron: '*/40 * * * *'  # 每40分钟执行一次
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 提交代码
+      - name: 设置 Git 用户信息
         run: |
-          git add .
-          git commit -m "自动提交"
-          git push
+          git config --global user.name 'Your Name'
+          git config --global user.email 'your-email@example.com'
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 安装依赖
+        run: npm install
+
+      - name: 启动应用程序
+        run: npm start
